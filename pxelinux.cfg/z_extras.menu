@@ -1,0 +1,26 @@
+
+
+#haven't set these up so this menu isn't used/included yet:
+
+LABEL memtest
+MENU LABEL Run Memtest86+
+LINUX /images/arch/memtest
+
+LABEL hdt
+MENU LABEL Run Hardware Detection Tool
+COM32 pxelinux.cfg/arch/hdt.c32
+
+LABEL partedmagic
+MENU LABEL Boot Parted Magic
+LINUX /images/memdisk
+INITRD /images/pmagic.iso
+APPEND iso raw
+
+LABEL reboot
+MENU LABEL Reboot
+COM32 pxelinux.cfg/arch/reboot.c32
+
+LABEL poweroff
+MENU LABEL Power Off
+COMBOOT pxelinux.cfg/arch/poweroff.com
+ 

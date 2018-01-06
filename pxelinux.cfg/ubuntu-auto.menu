@@ -1,0 +1,62 @@
+
+MENU INCLUDE pxelinux.cfg/menu-defaults/menu-defaults.cfg
+
+#Setting DEFAULT in these submenus does not work, if it has been set in the top-level menu!!
+#But we can use "MENU DEFAULT" immediately after a "LABEL" entry in the menu below, and that does work.
+#DEFAULT Pointless
+
+#Notes:
+#Desktop - Interactive installs in other menu use local repo (they do check web for updates/language packs too, if present)
+#
+#All these "auto" installs use text mode installer and online ubuntu archive mirror, 
+#they don't seem to use local repo, and netboot & nfsroot don't help with forcing to local repo.
+#Looks like we need to edit the .seed files to point to url of local repo.
+#
+#All these "auto" installs also require some additional manual input.
+#Looks like full automation will require additional instructions in the .seed files:
+
+MENU TITLE Ubuntu - Automated Install Menu
+
+LABEL Main-Menu
+      MENU LABEL Main Menu
+      KERNEL vesamenu.c32
+      APPEND pxelinux.cfg/default
+
+MENU SEPARATOR
+
+LABEL Install Ubuntu 17.04 Desktop
+      MENU DEFAULT
+      KERNEL ubuntu/17.04/desktop/vmlinuz.efi
+      #with server initrd - automated text install does seem to work, hopefully with workstation package selection from seed file.
+      #casper options are also ignored, so will load from online ubuntu mirror:
+      APPEND initrd=ubuntu/17.04/ubuntu-installer/amd64/initrd.gz preseed/url=http://192.168.1.100/repos/ubuntu/17.04/desktop/iso/preseed/ubuntu.seed preseed/interactive=false
+
+LABEL Install Ubuntu 17.04 Server
+      KERNEL ubuntu/17.04/ubuntu-installer/amd64/linux
+      APPEND initrd=ubuntu/17.04/ubuntu-installer/amd64/initrd.gz preseed/url=http://192.168.1.100/repos/ubuntu/17.04/server/iso/preseed/ubuntu-server.seed preseed/interactive=false
+
+MENU SEPARATOR
+
+LABEL Install Ubuntu 16.04 LTS Desktop
+      KERNEL ubuntu/16.04/desktop/vmlinuz.efi
+      APPEND initrd=ubuntu/16.04/ubuntu-installer/amd64/initrd.gz preseed/url=http://192.168.1.100/repos/ubuntu/16.04-LTS/desktop/iso/preseed/ubuntu.seed preseed/interactive=false
+	
+LABEL Install Ubuntu 16.04 LTS Server
+      KERNEL ubuntu/16.04/ubuntu-installer/amd64/linux
+      APPEND initrd=ubuntu/16.04/ubuntu-installer/amd64/initrd.gz preseed/url=http://192.168.1.100/repos/ubuntu/16.04-LTS/server/iso/preseed/ubuntu-server.seed preseed/interactive=false
+
+
+#desktop initrd no good:
+#append initrd=ubuntu/17.04/desktop/initrd.lz
+#auto=true priority=critical vga=788 
+# - with casper:
+#   - without netboot & nfsroot, (even with root=), unable to find live filesystem - no ui.
+#   - with netboot & nfsroot, it's interactive,
+# - without casper, no root fs:
+#   - even with netboot=nfs & nfsroot
+#   - even with root=1.6GB casper/filesystem.squashfs
+#boot=casper netboot=nfs nfsroot=192.168.1.100:/NFSexports/6Tb/Shared-6tb/data/repos/ubuntu/17.04/desktop/iso/
+#root=http://192.168.1.100/repos/ubuntu/17.04/desktop/iso/casper/filesystem.squashfs
+
+#try:
+#netboot=nfs nfsroot=192.168.1.100:/NFSexports/6Tb/Shared-6tb/data/repos/ubuntu/17.04/desktop/iso/

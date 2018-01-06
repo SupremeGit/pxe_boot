@@ -1,0 +1,47 @@
+
+MENU INCLUDE pxelinux.cfg/menu-defaults/menu-defaults.cfg
+
+#Setting DEFAULT in these submenus does not work, if it has been set in the top-level menu!!
+#But we can use "MENU DEFAULT" immediately after a "LABEL" entry in the menu below, and that does work.
+#DEFAULT Pointless
+
+#Notes:
+#These Live images all work best if you give them a bunch of ram. Tested with 8GB.
+#
+#Ubuntu uses nfsv3, which requires ports for rpc-bind open on host (in addition to usual ports for nfs)
+#If closed, you will see error saying no route to host.
+
+MENU TITLE Live Boot Menu
+
+LABEL Main-Menu
+      MENU LABEL Main Menu
+      KERNEL vesamenu.c32
+      APPEND pxelinux.cfg/default
+
+MENU SEPARATOR
+
+LABEL F27-WS-Live
+      MENU DEFAULT
+      MENU LABEL Fedora 27 Workstation
+      KERNEL z_kernel/vmlinuz-f27-workstation
+      APPEND rootflags=loop initrd=z_initrd/initrd-f27-workstation.img rootfstype=auto ro ipv6.disable=1 ip=dhcp rd.live.image root=live:http://192.168.1.100/repos/fedora/27/workstation/iso/LiveOS/squashfs.img
+
+MENU SEPARATOR
+
+LABEL F26-WS-Live
+      MENU LABEL Fedora 26 Workstation
+      KERNEL z_kernel/vmlinuz-f26-workstation
+      APPEND rootflags=loop initrd=z_initrd/initrd-f26-workstation.img rootfstype=auto ro ipv6.disable=1 ip=dhcp rd.live.image root=live:http://192.168.1.100/repos/fedora/27/workstation/iso/LiveOS/squashfs.img
+
+MENU SEPARATOR
+
+LABEL Ubuntu 17.04 Desktop
+      KERNEL ubuntu/17.04/ubuntu-installer/amd64/linux
+      APPEND initrd=ubuntu/17.04/desktop/initrd.lz preseed/url=http://192.168.1.100/repos/ubuntu/17.04/desktop/iso/preseed/ubuntu.seed boot=casper netboot=nfs nfsroot=192.168.1.100:/NFSexports/6Tb/Shared-6tb/data/repos/ubuntu/17.04/desktop/iso/
+
+MENU SEPARATOR
+
+LABEL Ubuntu 16.04 LTS Desktop
+      KERNEL ubuntu/16.04/desktop/vmlinuz.efi
+      APPEND initrd=ubuntu/16.04/desktop/initrd.lz preseed/url=http://192.168.1.100/repos/ubuntu/16.04-LTS/desktop/iso/preseed/ubuntu.seed boot=casper netboot=nfs nfsroot=192.168.1.100:/NFSexports/6Tb/Shared-6tb/data/repos/ubuntu/16.04-LTS/desktop/iso/
+

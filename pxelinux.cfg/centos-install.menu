@@ -1,0 +1,31 @@
+
+MENU INCLUDE pxelinux.cfg/menu-defaults/menu-defaults.cfg
+
+#Setting DEFAULT in these submenus does not work, if it has been set in the top-level menu!!
+#But we can use "MENU DEFAULT" immediately after a "LABEL" entry in the menu below, and that does work.
+#DEFAULT Pointless
+
+MENU TITLE CentOS - Install Menu
+
+LABEL Main-Menu
+      MENU LABEL Main Menu
+      KERNEL vesamenu.c32
+      APPEND pxelinux.cfg/default
+
+MENU SEPARATOR
+
+LABEL Install CentOS 7.4 Server
+      KERNEL z_kernel/vmlinuz-centos-7.4
+      APPEND initrd=z_initrd/initrd-centos-7.4.img ipv6.disable=1 ip=dhcp method=http://192.168.1.100/repos/centos/7/server/iso/
+
+LABEL Install CentOS 7.4 Server - KickStart
+      MENU DEFAULT
+      KERNEL z_kernel/vmlinuz-centos-7.4
+      #"method" on centos7/el7 kernels is even simpler than using "inst.stage2 and inst.repo":
+      APPEND initrd=z_initrd/initrd-centos-7.4.img ipv6.disable=1 ip=dhcp method=http://192.168.1.100/repos/centos/7/server/iso/ ksdevice=bootif ks=http://192.168.1.100/isos/pxe/vorpal/z_ks/ks.centos74.server.cfg
+      #"method" still works even when specifying a kickstart which contains possibly different repo.
+
+LABEL Install CentOS 7.4 Server - VNC
+      KERNEL z_kernel/vmlinuz-centos-7.4
+      APPEND  initrd=z_initrd/initrd-centos-7.4.img ipv6.disable=1 ip=dhcp method=http://192.168.1.100/repos/centos/7/server/iso/ devfs=nomount inst.vnc inst.vncpassword=password
+

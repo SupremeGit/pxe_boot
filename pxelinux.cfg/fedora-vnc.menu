@@ -1,0 +1,34 @@
+
+MENU INCLUDE pxelinux.cfg/menu-defaults/menu-defaults.cfg
+
+#Setting DEFAULT in these submenus does not work, if it has been set in the top-level menu!!
+#But we can use "MENU DEFAULT" immediately after a "LABEL" entry in the menu below, and that does work.
+#DEFAULT Pointless
+
+MENU TITLE Fedora - Install - VNC Menu
+
+LABEL Main-Menu
+      MENU LABEL Main Menu
+      KERNEL vesamenu.c32
+      APPEND pxelinux.cfg/default
+
+MENU SEPARATOR
+
+LABEL Install Fedora 27 Server - VNC
+      MENU DEFAULT
+      KERNEL z_kernel/vmlinuz-f27-server
+      APPEND initrd=z_initrd/initrd-f27-server.img ipv6.disable=1 ip=dhcp inst.stage2=http://192.168.1.100/repos/fedora/27/server/iso/ inst.repo=http://192.168.1.100/repos/fedora/27/server/iso/ devfs=nomount inst.vnc inst.vncpassword=password
+
+#LABEL Install Fedora 27 Workstation - VNC
+#      KERNEL z_kernel/vmlinuz-f27-workstation
+#      APPEND initrd=z_initrd/initrd-f27-workstation.img ipv6.disable=1 ip=dhcp inst.stage2=http://192.168.1.100/repos/fedora/27/workstation/iso/ inst.repo=http://192.168.1.100/repos/fedora/27/workstation/iso/ devfs=nomount inst.vnc inst.vncpassword=password
+
+MENU SEPARATOR
+
+#LABEL Install Fedora 26 Workstation - VNC
+#      KERNEL z_kernel/vmlinuz-f26-workstation
+#      APPEND initrd=z_initrd/initrd-f26-netinst.img ipv6.disable=1 ip=dhcp inst.stage2=http://192.168.1.100/repos/fedora/26/netinst/iso/ inst.repo=http://192.168.1.100/repos/fedora/26/workstation/iso/ devfs=nomount inst.vnc inst.vncpassword=password
+
+LABEL Install Fedora 26 Server - VNC
+      KERNEL z_kernel/vmlinuz-f26-server
+      APPEND initrd=z_initrd/initrd-f26-netinst.img ipv6.disable=1 ip=dhcp inst.stage2=http://192.168.1.100/repos/fedora/26/server/iso/ inst.repo=http://192.168.1.100/repos/fedora/26/server/iso/ devfs=nomount inst.vnc inst.vncpassword=password

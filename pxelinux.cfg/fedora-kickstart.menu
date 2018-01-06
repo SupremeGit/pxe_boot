@@ -1,0 +1,44 @@
+
+MENU INCLUDE pxelinux.cfg/menu-defaults/menu-defaults.cfg
+
+#Setting DEFAULT in these submenus does not work, if it has been set in the top-level menu!!
+#But we can use "MENU DEFAULT" immediately after a "LABEL" entry in the menu below, and that does work.
+#DEFAULT Pointless
+
+MENU TITLE Fedora - Install - Kickstart Menu
+
+LABEL Main-Menu
+      MENU LABEL Main Menu
+      KERNEL vesamenu.c32
+      APPEND pxelinux.cfg/default
+
+MENU SEPARATOR
+
+LABEL Install Fedora 27 Server - KickStart
+      MENU DEFAULT
+      KERNEL z_kernel/vmlinuz-f27-server
+      APPEND initrd=z_initrd/initrd-f27-server.img ipv6.disable=1 ip=dhcp inst.stage2=http://192.168.1.100/repos/fedora/27/server/iso/ ksdevice=bootif ks=http://192.168.1.100/isos/pxe/vorpal/z_ks/ks.f27.server.cfg
+
+MENU SEPARATOR
+
+LABEL Install Fedora 26 Server - KickStart
+      KERNEL z_kernel/vmlinuz-f26-server
+      APPEND initrd=z_initrd/initrd-f26-netinst.img ipv6.disable=1 ip=dhcp inst.stage2=http://192.168.1.100/repos/fedora/26/server/iso/ ksdevice=bootif ks=http://192.168.1.100/isos/pxe/vorpal/z_ks/ks.f26.server.cfg
+
+
+#Note:
+#There must be another way to install these stupid workstation dvds via kickstart.
+#The usual method will never work, because the iso contains a squashfs containing only a live filesystem, not a repo with packages.
+#
+#If we point at the squashfs it boots to live os but does nothing with kickstart.
+#need to use netinst initrd, and use kickstart pointing to a repo with packages obtained from somewhere.
+#rootfstype=auto ro ipv6.disable=1 rd.live.image root=live:http://192.168.1.100/repos/fedora/27/workstation/iso/LiveOS/squashfs.img
+
+#LABEL Install Fedora 27 Workstation - KickStart
+#      KERNEL z_kernel/vmlinuz-f27-workstation
+#      APPEND initrd=z_initrd/initrd-f27-workstation.img ipv6.disable=1 ip=dhcp inst.stage2=http://192.168.1.100/repos/fedora/27/workstation/iso/ ksdevice=bootif ks=http://192.168.1.100/isos/pxe/vorpal/z_ks/ks.f27.workstation.cfg
+
+#LABEL Install Fedora 26 Workstation - KickStart
+#      KERNEL z_kernel/vmlinuz-f26-workstation
+#      APPEND initrd=z_initrd/initrd-f26-netinst.img ipv6.disable=1 ip=dhcp inst.stage2=http://192.168.1.100/repos/fedora/26/netinst/iso/ ksdevice=bootif ks=http://192.168.1.100/isos/pxe/vorpal/z_ks/ks.f26.workstation.cfg
+

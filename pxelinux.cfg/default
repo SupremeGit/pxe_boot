@@ -1,0 +1,78 @@
+
+MENU INCLUDE pxelinux.cfg/menu-defaults/menu-defaults.cfg
+
+DEFAULT CentOS-Install
+#DEFAULT Local
+#
+#Set the global default. If "label" points into a submenu, that menu becomes the start menu. 
+#In other words, this directive has the same effect as both MENU DEFAULT and MENU START.
+#For backwards compatibility with earlier versions of Syslinux, this behavior 
+#is ignored unless the configuration file also contains a UI directive. 
+#
+#DEFAULT is ignored if TIMEOUT and ONTIMEOUT are both set.
+
+#Does nothing unless TIMEOUT is enabled (We enable it in menu-defaults.cfg).
+#But it's better not to specify this, as it is stupid to set the ONTIMEOUT target to 
+#something different to DEFAULT - that could lead to user letting the timeout 
+#expire, expecting the highlighted default entry to boot - but instead, the 
+#non-highlighted ONTIMEOUT entry will boot, which would be confusing
+#ONTIMEOUT CentOS-Install
+
+MENU TITLE Network Boot Menu
+
+LABEL Live
+        MENU LABEL Live Boot Menu
+        KERNEL vesamenu.c32
+        APPEND pxelinux.cfg/live.menu
+
+MENU SEPARATOR
+
+#These MENU DISABLE separators are hard to see with our colour scheme, 
+#better off just using MENU SEPARATOR
+#LABEL -
+#        MENU LABEL Fedora:
+#        MENU DISABLE
+
+LABEL CentOS-Install
+        MENU LABEL CentOS - Install
+        KERNEL vesamenu.c32
+        APPEND pxelinux.cfg/centos-install.menu
+
+MENU SEPARATOR
+
+LABEL Fedora-Install
+        MENU LABEL Fedora - Install
+        KERNEL vesamenu.c32
+        APPEND pxelinux.cfg/fedora-install.menu
+
+LABEL Fedora-Install-KickStart
+        MENU LABEL Fedora - Install - Automated (KickStart) 
+        KERNEL vesamenu.c32
+        APPEND pxelinux.cfg/fedora-kickstart.menu
+
+LABEL Fedora-Install-VNC
+        MENU LABEL Fedora - Install - VNC
+        KERNEL vesamenu.c32
+        APPEND pxelinux.cfg/fedora-vnc.menu
+
+MENU SEPARATOR
+
+LABEL Ubuntu-Interactive
+        MENU LABEL Ubuntu - Install - Interactive
+        KERNEL vesamenu.c32
+        APPEND pxelinux.cfg/ubuntu-interactive.menu
+
+LABEL Ubuntu-Auto
+        MENU LABEL Ubuntu - Install - Automated
+        KERNEL vesamenu.c32
+        APPEND pxelinux.cfg/ubuntu-auto.menu
+
+MENU SEPARATOR
+
+LABEL Local
+        MENU LABEL Boot local disk
+        LOCALBOOT 0
+
+
+
+
